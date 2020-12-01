@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hash Router</title>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div id="nav">
+        <a href="#/page1">page1</a>
+        <a href="#/page2">page2</a>
+        <a href="#/page3">page3</a>
+        <a href="#/page4">page4</a>
+        <a href="#/page5">page5</a>
+    </div>
+    <div id="container"></div>
+
+    <script>
+        const router = new HashRouter()
+        const container = document.getElementById('container')
+
+        router.registerIndex(() => container.innerHTML = '我是首页')
+
+        router.register('/page1', () => container.innerHTML = '我是page1')
+        router.register('/page2', () => container.innerHTML = '我是page2')
+        router.register('/page3', () => container.innerHTML = '我是page3')
+        router.register('/page4', () => { throw new Error('抛出一个异常') })
+
+        router.load()
+
+        router.registerNotFound(() => container.innerHTML = '页面未找到')
+        router.registerError((e) => container.innerHTML = '页面异常，错误消息：<br>' + e.message)
+
+        console.log(router)
+    </script>
+</body>
+</html>

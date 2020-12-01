@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="nav">
+        <a href="/page1">page1</a>
+        <a href="/page2">page2</a>
+        <a href="/page3">page3</a>
+        <a href="/page4">page4</a>
+        <a href="/page5">page5</a>
+        <button id="btn">page2</button>
+    </div>
+    <div id="container"></div>
+
+    <script src="./index.js"></script>
+    <script>
+        const router = new HistoryRouter()
+        const container = document.getElementById('container')
+
+        router.registerIndex(() => container.innerHTML = 'home page')
+
+        router.register('/page1', () => container.innerHTML = 'page1')
+        router.register('/page2', () => container.innerHTML = 'page2')
+        router.register('/page3', () => container.innerHTML = 'page3')
+        router.register('/page4', () => {
+            throw new Error('error')
+        })
+
+        document.getElementById('btn').onclick = () => router.assign('/page2')
+
+        router.registerNotFound(() => container.innerHTML = 'Not Found')
+        router.registerError((e) => container.innerHTML = 'error:' + e.message)
+
+        router.load()
+    </script>
+</body>
+</html>
