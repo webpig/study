@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>defer</title>
+    <script src="log.js" defer></script>
+    <script src="log2.js" defer></script>
+    <script src="async-log.js" async></script>
+    <script src="async-log2.js" async></script>
+    <style>
+        .container {
+            width: 100px;
+            height: 100px;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container"></div>
+<script>
+    window.onload = () => {
+        console.log('load')
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOMContentLoaded')
+    })
+
+    for (let i = 0; i < 100000000; i++) {
+    }
+</script>
+</body>
+</html>
