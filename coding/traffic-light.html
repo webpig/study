@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模拟交通灯</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header {
+            line-height: 2rem;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .traffic {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .traffic .light {
+            width: 100px;
+            height: 100px;
+            background-color: #999;
+            border-radius: 50%;
+        }
+
+        .traffic.pass .light:nth-child(1) {
+            background-color: #0a6;
+        }
+        .traffic.wait .light:nth-child(2) {
+            background-color: #cc0;
+        }
+        .traffic.stop .light:nth-child(3) {
+            background-color: #c00;
+        }
+    </style>
+</head>
+<body>
+    <header>模拟交通灯</header>
+    <main>
+        <div class="traffic pass">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+    </main>
+
+    <script>
+        const traffic = document.querySelector('.traffic')
+
+        // function loop(subject) {
+        //     subject.className = 'traffic pass'
+        //     setTimeout(() => {
+        //         subject.className = 'traffic wait'
+        //         setTimeout(() => {
+        //             subject.className = 'traffic stop'
+        //             setTimeout(loop.bind(null, subject), 1000)
+        //         }, 2000)
+        //     }, 3000)
+        // }
+
+        // function signalLoop(subject, signals = [], onSignal) {
+        //     const signalCount = signals.length
+        //     function updateState(i) {
+        //         const { signal, duration } = signals[i % signalCount]
+        //         onSignal(subject, signal)
+        //         setTimeout(updateState.bind(null, i + 1), duration)
+        //     }
+        //     updateState(0)
+        // }
+        //
+        // const signals = [
+        //     { signal: 'pass', duration: 3000 },
+        //     { signal: 'wait', duration: 2000 },
+        //     { signal: 'stop', duration: 1000 },
+        // ]
+        //
+        // signalLoop(traffic, signals, (subject, signal) => {
+        //     subject.className =  `traffic ${signal}`
+        // })
+
+        function wait(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms)
+            })
+        }
+
+        // (async function() {
+        //     while (1) {
+        //         await wait(3000)
+        //         traffic.className = 'traffic wait'
+        //         await wait(2000)
+        //         traffic.className = 'traffic stop'
+        //         await wait(1000)
+        //         traffic.className = 'traffic pass'
+        //     }
+        // }())
+        async function signalLoop(subject, signals = [], onSignal) {
+            const signalCount = signals.length
+            for (let i = 0; ; i++) {
+                const { signal, duration } = signals[i % signalCount]
+                await onSignal(subject, signal)
+                await wait(duration)
+            }
+        }
+
+        const signals = [
+            { signal: 'pass', duration: 3000 },
+            { signal: 'wait', duration: 2000 },
+            { signal: 'stop', duration: 1000 },
+        ]
+
+        signalLoop(traffic, signals, (subject, signal) => {
+            subject.className =  `traffic ${signal}`
+        })
+    </script>
+</body>
+</html>
